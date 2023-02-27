@@ -1,10 +1,11 @@
-import { IsString, IsEmail, IsNotEmpty, MinLength, Matches, IsPhoneNumber } from 'class-validator';
+import { IsString, IsNumberString, IsEmail, IsNotEmpty, MinLength, Matches, IsPhoneNumber } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateMemberDto {
 
     @IsString()
-    id: string;
+    @IsNotEmpty()
+    memberId: string;
 
     @IsString()
     @IsNotEmpty()

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  auth-gateway:
+    container_name: auth-gateway
+    image: singahu/nestjs-auth-gateway:latest
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - with-market
+  db:
+    container_name: auth-db
+    image: mysql:latest
+    restart: always
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_DATABASE: nestjs-cicdtest
+      MYSQL_USER: kihwan
+      MYSQL_PASSWORD: kihwan
+      MYSQL_ROOT_PASSWORD: kihwan
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db_data:/var/lib/mysql
+    networks:
+      - with-market
+
+networks:
+  with-market:
+

@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { MemberModule } from './member/member.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 
 @Module({
   imports: [
     AuthModule,
+    MemberModule,
     ConfigModule.forRoot({
-      envFilePath: ['local.env', 'dev.env', 'prod.env'],
+      envFilePath: `config/${process.env.NODE_ENV}.env`,
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -23,6 +25,7 @@ import { join } from 'path';
         synchronize: configService.get('SYNC') === 'true',
         logging: configService.get('LOG') === 'true',
         entities: [join(__dirname + '/**/entities/*.entity.{js,ts}')],
+        // cache: false, 
         extra: {
           connectionLimit: 10, // Connection Pool에 생성할 최대 Connection 개수
           acquireTimeout: 2000, // Connection Pool에서 Connection을 얻는데 최대 대기할 시간(ms)

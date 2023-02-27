@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { plainToClass } from 'class-transformer';
 import { CreateMemberDto } from './dto/create-member.dto';
@@ -16,6 +16,26 @@ export class MemberService {
 
   async findOne(id: string): Promise<Member> {
     return this.memberRepository.findOneBy({id: +id});
+  }
+
+  async findMembersByPaging(currentPage: number, pageSize: number) {
+    return this.memberRepository.find({
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
+    })
+  }
+
+  // async findMembers(): Promise<Member[]> {
+  //   return await this.memberRepository
+  //   .createQueryBuilder('member') // 'member'라는 alias를 명시적으로 지정
+  //   .select(["member.id", "member.name"])
+  //   .where("member.id = :id", { id: 1 })
+  //   .orderBy("member.name", "ASC")
+  //   .getMany();
+  // }
+
+  async findMembers(): Promise<Member> {
+    return this.memberRepository.findOneBy({id: 1});
   }
 
   async findOneByProviderId(providerId: string): Promise<Member> {
