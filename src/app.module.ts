@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { MemberModule } from './member/member.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { HealthCheckModule } from './health-check/health-check.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { join } from 'path';
       }),
       inject: [ConfigService],
     }),
+    HealthCheckModule,
   ],
 })
 export class AppModule {}
