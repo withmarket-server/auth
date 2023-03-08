@@ -6,6 +6,7 @@ import { plainToClass } from 'class-transformer';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import * as bcrypt from 'bcrypt';
+import { FindMemberDto } from './dto/find-member-dto';
 
 @Injectable()
 export class MemberService {
@@ -18,11 +19,21 @@ export class MemberService {
     return this.memberRepository.findOneBy({id: +id});
   }
 
-  async findMembersByPaging(currentPage: number, pageSize: number) {
-    return this.memberRepository.find({
-      skip: (currentPage - 1) * pageSize,
-      take: pageSize,
-    })
+  async findMembersByNoOffSet(offset: number, pageSize: number, query: FindMemberDto) {
+    const queryBuilder = this.memberRepository.createQueryBuilder('member');
+    // 코드 최적화 하기
+    Object.entries(query).forEach(([key, value]) => {
+      if (value != undefined && value != null) {
+        queryBuilder.andWhere(`member.${key} = :${key}`, { [key]: value });
+      }
+    });
+
+    const [members, totalCount] = await queryBuilder
+      .take(pageSize)
+      .skip(offset)
+      .getManyAndCount()
+
+    return members
   }
 
   // async findMembers(): Promise<Member[]> {

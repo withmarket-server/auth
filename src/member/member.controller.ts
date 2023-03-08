@@ -4,7 +4,7 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { Member } from './entities/member.entity';
 import { FindMemberDto } from './dto/find-member-dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 // import { JwtAuthGuard } from '../auth/security/jwt-auth.guard';
 
 @ApiBearerAuth('jwt')

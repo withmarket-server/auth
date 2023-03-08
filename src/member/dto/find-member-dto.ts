@@ -8,6 +8,9 @@ export class FindMemberDto {
   @IsString()
   memberId?: string;
 
+  @IsString()
+  name?: string;
+
   @IsEmail()
   email?: string;
 }

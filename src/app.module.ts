@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './interceptor/logging.interceptor';
 import { AuthModule } from './auth/auth.module';
 import { MemberModule } from './member/member.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { HealthCheckModule } from './health-check/health-check.module';
+import { ApiGatewayModule } from './api-gateway/api-gateway.module';
 
 @Module({
   imports: [
@@ -34,7 +36,13 @@ import { HealthCheckModule } from './health-check/health-check.module';
       }),
       inject: [ConfigService],
     }),
-    HealthCheckModule,
+    ApiGatewayModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor
+    }
   ],
 })
 export class AppModule {}

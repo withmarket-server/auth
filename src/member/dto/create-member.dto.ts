@@ -1,5 +1,6 @@
 import { IsString, IsNumberString, IsEmail, IsNotEmpty, MinLength, Matches, IsPhoneNumber } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMemberDto {
 

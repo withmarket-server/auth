@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: withmarket-gateway
+  name: withmarket-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: withmarket-gateway
+  template:
+    metadata:
+      labels:
+        app: withmarket-gateway
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: /metrics
+        prometheus.io/port: '3000'
+    spec:
+      containers:
+        - image: singahu/withmarket-gateway
+          name: withmarket-gateway
+          ports:
+            - containerPort: 3000
